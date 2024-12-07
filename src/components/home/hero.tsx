@@ -35,9 +35,7 @@ export default function Hero() {
               <nav className="w-full">
                 {/* Navigation Links */}
                 <motion.ul
-                  initial={{ "--rotate": "300deg", y: -100 }}
-                  animate={{ "--rotate": "360deg", y: 0 }}
-                  transition={{ duration: 1.5 }}
+                  
                   className="hidden md:flex gap-8 text-lg font-poppins"
                 >
                   {["Home", "How It Works", "Create", "Decrypt"].map(
@@ -89,7 +87,7 @@ export default function Hero() {
                 <LettersPullUp text="Where Words Blossom into Greenery" />
               </motion.div>
               <motion.div
-                className="font-lora w-[80%]"
+                className="font-lora w-[85%]"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1.5 }}
