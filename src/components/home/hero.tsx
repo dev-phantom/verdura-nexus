@@ -4,7 +4,7 @@ import { LettersPullUp } from "../letters-pull-up";
 
 export default function Hero() {
   return (
-    <div className="w-[95%] mx-auto py-4 static">
+    <div className="w-[95%] mx-auto pt-4 static">
       {/* Container for image and text */}
       <div className="relative w-full">
         {/* Background Image */}

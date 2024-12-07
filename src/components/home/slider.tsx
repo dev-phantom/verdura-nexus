@@ -39,7 +39,7 @@ export default function Slider() {
 
   return (
     <div
-      className="relative isolate aspect-video w-full mx-auto rounded-xl shadow-lg bg-contain bg-no-repeat bg-center flex items-center justify-center mb-10"
+      className="relative -top-10 isolate aspect-video w-full mx-auto rounded-xl shadow-lg bg-contain bg-no-repeat bg-center flex items-center justify-center mb-10"
       style={{
         backgroundImage: `url('https://res.cloudinary.com/phantom1245/image/upload/v1733607340/verdura-nexus/Rectangle_2_1_ddmgpp.png')`,
       }}
