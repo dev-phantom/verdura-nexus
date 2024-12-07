@@ -2,11 +2,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 const flowerImages = [
-  "https://res.cloudinary.com/phantom1245/image/upload/v1733545773/verdura-nexus/faux-watermelon-peperomia-plant-gray-pot_kknxhs.jpg",
-  "https://res.cloudinary.com/phantom1245/image/upload/v1733545769/verdura-nexus/plant-8360681_1280_ez2zif.png",
   "https://res.cloudinary.com/phantom1245/image/upload/v1733545753/verdura-nexus/houseplant-7367379_1280-removebg-preview_qapvtc.png",
-  "https://res.cloudinary.com/phantom1245/image/upload/v1733545747/verdura-nexus/flower-stick-564132_1280_hu0nkc.jpg",
+  "https://res.cloudinary.com/phantom1245/image/upload/v1733545754/verdura-nexus/plant-8360682_1280-removebg-preview_ntbrsn.png",
+  "https://res.cloudinary.com/phantom1245/image/upload/v1733545753/verdura-nexus/plant-8360681_1280-removebg-preview_mdnzox.png",
   "https://res.cloudinary.com/phantom1245/image/upload/v1733545746/verdura-nexus/plant-763965_1280-removebg-preview_gcpob3.png",
+  "https://res.cloudinary.com/phantom1245/image/upload/v1733545746/verdura-nexus/flower-stick-564132_1280-removebg-preview_adqcn6.png",
 ];
 
 export default function Slider() {
@@ -24,34 +24,42 @@ export default function Slider() {
     );
   };
 
+  const getPosition = (index: number) => {
+    if (index === currentIndex)
+      return "z-20 scale-150 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"; // Center active image
+    if (index === (currentIndex + 1) % flowerImages.length)
+      return "z-10 -bottom-32 left-32 scale-75"; // Right-bottom next image
+    if (
+      index ===
+      (currentIndex - 1 + flowerImages.length) % flowerImages.length
+    )
+      return "z-10 -bottom-32 right-32 scale-90"; // Left-bottom previous image
+    return "z-0 opacity-0"; // Hide non-adjacent images
+  };
+
   return (
     <div
-      className="isolate aspect-video w-full mx-auto rounded-xl shadow-lg   bg-contain bg-no-repeat bg-center flex items-center justify-center mb-10"
+      className="relative isolate aspect-video w-full mx-auto rounded-xl shadow-lg bg-contain bg-no-repeat bg-center flex items-center justify-center mb-10"
       style={{
         backgroundImage: `url('https://res.cloudinary.com/phantom1245/image/upload/v1733607340/verdura-nexus/Rectangle_2_1_ddmgpp.png')`,
       }}
     >
       {/* Slider Container */}
-      <div className=" relative w-3/4 flex items-center justify-center overflow-hidden">
-        <motion.div
-          className="flex gap-8"
-          initial={{ x: 0 }}
-          animate={{ x: -currentIndex * 100 + "%" }}
-          transition={{ type: "spring", stiffness: 50 }}
-        >
-          {flowerImages.map((image, index) => (
-            <motion.div
-              key={index}
-              className="flex-shrink-0 w-full h-[60vh] flex items-center justify-center"
-            >
-              <img
-                src={image}
-                alt={`Flower ${index + 1}`}
-                className="max-h-full object-contain"
-              />
-            </motion.div>
-          ))}
-        </motion.div>
+      <div className="relative flex items-center justify-center h-[60vh] w-full">
+        {flowerImages.map((image, index) => (
+          <motion.div
+            key={index}
+            className={`absolute transition-all duration-500 ease-in-out transform ${getPosition(
+              index
+            )}`}
+          >
+            <img
+              src={image}
+              alt={`Flower ${index + 1}`}
+              className="h-60 md:h-72 lg:h-80 object-contain rounded-lg"
+            />
+          </motion.div>
+        ))}
       </div>
 
       {/* Navigation Buttons */}
