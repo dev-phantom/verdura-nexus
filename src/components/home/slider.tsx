@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useSwipeable } from "react-swipeable";
 
 const flowerImages = [
-  "https://res.cloudinary.com/phantom1245/image/upload/v1733545753/verdura-nexus/houseplant-7367379_1280-removebg-preview_qapvtc.png",
   "https://res.cloudinary.com/phantom1245/image/upload/v1733545754/verdura-nexus/plant-8360682_1280-removebg-preview_ntbrsn.png",
+  "https://res.cloudinary.com/phantom1245/image/upload/v1733545753/verdura-nexus/houseplant-7367379_1280-removebg-preview_qapvtc.png",
   "https://res.cloudinary.com/phantom1245/image/upload/v1733545753/verdura-nexus/plant-8360681_1280-removebg-preview_mdnzox.png",
   "https://res.cloudinary.com/phantom1245/image/upload/v1733545746/verdura-nexus/plant-763965_1280-removebg-preview_gcpob3.png",
   "https://res.cloudinary.com/phantom1245/image/upload/v1733545746/verdura-nexus/flower-stick-564132_1280-removebg-preview_adqcn6.png",
@@ -37,8 +38,16 @@ export default function Slider() {
     return "z-0 opacity-0"; // Hide non-adjacent images
   };
 
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: handleNext,
+    onSwipedRight: handlePrev,
+    preventScrollOnSwipe: true,
+    trackMouse: true, // Optional: Enables swipe gestures with the mouse
+  });
+
   return (
     <div
+      {...swipeHandlers}
       className="relative -top-10 isolate aspect-video w-full mx-auto rounded-xl shadow-lg bg-contain bg-no-repeat bg-center flex items-center justify-center mb-10"
       style={{
         backgroundImage: `url('https://res.cloudinary.com/phantom1245/image/upload/v1733607340/verdura-nexus/Rectangle_2_1_ddmgpp.png')`,
@@ -64,13 +73,13 @@ export default function Slider() {
 
       {/* Navigation Buttons */}
       <button
-        className="absolute left-5 bg-amber-500 p-3 rounded-full hover:bg-amber-700 focus:outline-none"
+        className="absolute left-5 bg-orange-400 px-4 py-2 rounded-full hover:bg-orange-600 focus:outline-none"
         onClick={handlePrev}
       >
         &#8249;
       </button>
       <button
-        className="absolute right-5 bg-amber-500 p-3 rounded-full hover:bg-amber-700 focus:outline-none"
+        className="absolute right-5 bg-orange-400 px-4 py-2 rounded-full hover:bg-orange-600 focus:outline-none"
         onClick={handleNext}
       >
         &#8250;
