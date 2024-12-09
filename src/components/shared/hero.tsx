@@ -10,6 +10,8 @@ export default function Hero({
   subTitle,
   buttonText,
   showImg = false,
+  containerWidth,
+  blobImgHeight = '[46rem]'
 }: HeroLayoutProps) {
   return (
     <>
@@ -30,7 +32,7 @@ export default function Hero({
                 "https://res.cloudinary.com/phantom1245/image/upload/v1733542824/verdura-nexus/Rectangle_1_ixw2gg.png"
               }
               alt="bg-asset"
-              className="w-full h-[46rem]"
+              className={`w-full h-${blobImgHeight}`}
               initial={{ scale: 1.1 }}
               animate={{ scale: 1 }}
               transition={{ duration: 2, repeatType: "reverse" }}
@@ -40,7 +42,7 @@ export default function Hero({
             <div className="absolute inset-0 flex justify-start items-start flex-col">
               <Navbar />
               <motion.div
-                className="w-full pt-16 flex justify-between items-center"
+                className="w-full pt-16 flex justify-between h-full items-center"
                 initial={{ opacity: 0, x: -100 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1.5 }}
@@ -63,6 +65,7 @@ export default function Hero({
                     transition={{ duration: 1.5 }}
                   >
                     <LettersPullUp
+                      containerWidth={containerWidth}
                       text={title || "Where Words Blossom into Greenery"}
                     />
                   </motion.div>

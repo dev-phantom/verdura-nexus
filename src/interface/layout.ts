@@ -6,4 +6,6 @@ export interface LayoutProps {
   subTitle?: string;
   buttonText?: string;
   showImg?: boolean;
+  containerWidth?: string;
+  blobImgHeight?: string;
 }

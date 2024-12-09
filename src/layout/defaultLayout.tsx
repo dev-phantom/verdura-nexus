@@ -10,6 +10,8 @@ export default function DefaultLayout({
   subTitle,
   buttonText,
   showImg = false,
+  containerWidth,
+  blobImgHeight
 }: LayoutProps) {
   return (
     <div className="bg-darkGreen w-full text-white overflow-hidden">
@@ -20,6 +22,8 @@ export default function DefaultLayout({
         subTitle={subTitle}
         buttonText={buttonText}
         showImg={showImg}
+        containerWidth={containerWidth}
+        blobImgHeight={blobImgHeight}
       />
       <main>{children}</main>
       <Footer />
