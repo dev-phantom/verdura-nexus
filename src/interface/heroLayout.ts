@@ -6,5 +6,6 @@ export interface HeroLayoutProps {
   subTitle?: string;
   buttonText?: string;
   showImg?: boolean;
-  containerWidth?: string
+  containerWidth?: string;
+  buttonLink?: string;
 }

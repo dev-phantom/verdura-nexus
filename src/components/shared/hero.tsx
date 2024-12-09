@@ -11,7 +11,8 @@ export default function Hero({
   buttonText,
   showImg = false,
   containerWidth,
-  blobImgHeight = '[46rem]'
+  blobImgHeight = '[46rem]',
+  buttonLink
 }: HeroLayoutProps) {
   return (
     <>
@@ -79,6 +80,7 @@ export default function Hero({
                       "Unleash the magic of nature with every message you send. At Verdura Nexus, your personalized messages grow into unique plant-inspired creations."}
                   </motion.div>
                   <div className="pt-8">
+                    <a href={buttonLink || "/create#creating"}>
                     <motion.button
                       className="bg-darkGreen border border-white rounded-xl font-poppins font-bold w-[12rem] h-[3rem]"
                       whileHover={{ scale: 1.1 }}
@@ -87,6 +89,7 @@ export default function Hero({
                     >
                       {buttonText || "Create My Plant"}
                     </motion.button>
+                    </a>
                   </div>
                 </div>
                 {showImg && (

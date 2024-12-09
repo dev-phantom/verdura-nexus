@@ -8,4 +8,5 @@ export interface LayoutProps {
   showImg?: boolean;
   containerWidth?: string;
   blobImgHeight?: string;
+  buttonLink?: string;
 }

@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
 
           <div>
             <h3 className="font-semibold mb-2">Quick Links</h3>
-            <ul>
+            <ul className="space-y-3">
               <li>
                 <a href="/" className="hover:text-orange-400">
                   Home
@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
           {/* Socials */}
           <div>
             <h3 className="font-semibold mb-2">Socials</h3>
-            <ul>
+            <ul className="space-y-3">
               <li>
                 <a
                   href="https://twitter.com"
@@ -86,7 +86,7 @@ const Footer: React.FC = () => {
           {/* External */}
           <div>
             <h3 className="font-semibold mb-2">External</h3>
-            <ul>
+            <ul className="space-y-3">
               <li>
                 <a href="/portfolio" className="hover:text-orange-400">
                   Portfolio

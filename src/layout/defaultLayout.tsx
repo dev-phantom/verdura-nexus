@@ -11,7 +11,8 @@ export default function DefaultLayout({
   buttonText,
   showImg = false,
   containerWidth,
-  blobImgHeight
+  blobImgHeight,
+  buttonLink,
 }: LayoutProps) {
   return (
     <div className="bg-darkGreen w-full text-white overflow-hidden">
@@ -24,6 +25,7 @@ export default function DefaultLayout({
         showImg={showImg}
         containerWidth={containerWidth}
         blobImgHeight={blobImgHeight}
+        buttonLink={buttonLink}
       />
       <main>{children}</main>
       <Footer />

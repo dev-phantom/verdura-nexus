@@ -27,7 +27,7 @@ export const Navbar = () => {
           <motion.ul className="hidden md:flex gap-8 text-lg font-poppins">
             {[
               { name: "Home", link: "/" },
-              { name: "How It Works", link: "#howItWorks" },
+              { name: "How It Works", link: "/#howItWorks" },
               { name: "Create", link: "/create" },
               { name: "Decrypt", link: "/decrypt" },
             ].map((item, index) => (
