@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Navbar } from "../common/navbar";
 import { LettersPullUp } from "../letters-pull-up";
 import { HeroLayoutProps } from "../../interface/heroLayout";
+import { useNavigate } from "react-router";
 
 export default function Hero({
   blobImg,
@@ -11,9 +12,26 @@ export default function Hero({
   buttonText,
   showImg = false,
   containerWidth,
-  blobImgHeight = '[46rem]',
-  buttonLink
+  blobImgHeight = "[46rem]",
+  buttonLink,
 }: HeroLayoutProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    // Navigate to the route without the fragment
+    const path = (buttonLink || "/create").split("#")[0];
+    const pathId = (buttonLink || "creating").split("#")[1];
+    navigate(path, { state: { fragment: "creating" } });
+
+    // Scroll to the ID after the navigation completes
+    setTimeout(() => {
+      const elementId = !pathId ? "creating" : `#${pathId}`;
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100); // Slight delay to ensure DOM rendering
+  };
   return (
     <>
       {/* Hero Section with Scroll Animation */}
@@ -80,16 +98,15 @@ export default function Hero({
                       "Unleash the magic of nature with every message you send. At Verdura Nexus, your personalized messages grow into unique plant-inspired creations."}
                   </motion.div>
                   <div className="pt-8">
-                    <a href={buttonLink || "/create#creating"}>
                     <motion.button
                       className="bg-darkGreen border border-white rounded-xl font-poppins font-bold w-[12rem] h-[3rem]"
                       whileHover={{ scale: 1.1 }}
                       animate={{ y: [0, -10, 0] }}
                       transition={{ duration: 1 }}
+                      onClick={handleClick}
                     >
                       {buttonText || "Create My Plant"}
                     </motion.button>
-                    </a>
                   </div>
                 </div>
                 {showImg && (
