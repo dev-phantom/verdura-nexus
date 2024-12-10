@@ -5,9 +5,11 @@ import * as React from 'react';
 export function LettersPullUp({
   text,
   className = '',
+  containerWidth= "full"
 }: {
   text: string;
   className?: string;
+  containerWidth?:string;
 }) {
   const splittedText = text.split('');
  
@@ -24,7 +26,7 @@ export function LettersPullUp({
   const ref = React.useRef(null);
   const isInView = useInView(ref, { once: true });
   return (
-    <div className="flex flex-wrap  w-full">
+    <div className={`flex flex-wrap w-${containerWidth}`}>
       {splittedText.map((current, i) => (
         <motion.div
           key={i}
