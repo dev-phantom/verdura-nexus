@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import CallToAction from "../components/shared/callToAction";
@@ -10,7 +11,6 @@ export default function Decrypt() {
   const [decodedMessage, setDecodedMessage] = useState(
     "Hi there! Just like a sunflower turns to face the sun, my thoughts turn to you every day. 🌻 Keep shining bright!"
   );
-
   const handleClose = () => {
     setImageSelected(false);
   };
