@@ -12,7 +12,6 @@ export default function Decrypt() {
     setImageSelected(false);
   };
 
-  console.log(uploadedFile);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]; // Add optional chaining
@@ -27,17 +26,17 @@ export default function Decrypt() {
       alert("Message copied to clipboard!");
     });
   };
-  setDecodedMessage("Hi there! Just like a sunflower turns to face the sun, my thoughts turn to you every day. 🌻 Keep shining bright!");
+  // setDecodedMessage("Hi there! Just like a sunflower turns to face the sun, my thoughts turn to you every day. 🌻 Keep shining bright!");
   return (
     <DefaultLayout
       blobImg="https://res.cloudinary.com/phantom1245/image/upload/v1733779338/verdura-nexus/Rectangle_1_1_n6uooh.png"
       showBrandName={false}
       showImg={false}
-      title="Decrypt Your PersonalizedPlant Message"
+      title="Decrypt Your Personalized Plant Message"
       subTitle="Upload your encrypted plant image to reveal the hidden message. Your secret message awaits!"
       buttonText="Start Decrypt"
-      containerWidth="[95%]"
-      blobImgHeight="[40rem]"
+      containerWidth="[100%]"
+      blobImgHeight="[20rem]"
       buttonLink="/decrypt#decrypting"
     >
       <div id="#decrypting" className="py-16 px-12 text-white">
