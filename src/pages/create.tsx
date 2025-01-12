@@ -29,7 +29,6 @@ export default function Create() {
       });
 
       const imageUrl = response.data?.[0]?.urls?.regular;
-      console.log(imageUrl);
       if (!imageUrl) throw new Error("Failed to fetch the image.");
 
       // Load the image
@@ -51,7 +50,6 @@ export default function Create() {
 
         // Convert the canvas to a data URL
         const encodedImage = canvas.toDataURL();
-        console.log(encodedImage);
         setGeneratedImage(encodedImage);
         setShowPopover(true);
       } else {
