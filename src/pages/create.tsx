@@ -8,7 +8,10 @@ import axios from "axios";
 export default function Create() {
   const [showPopover, setShowPopover] = useState(false);
   const [theme, setTheme] = useState("Romantic");
+  const [decorations, setDecorations] = useState(["Butterflies"]);
   const [message, setMessage] = useState("");
+  const [encrypt, setEncrypt] = useState(false);
+  const [password, setPassword] = useState("");
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -18,45 +21,51 @@ export default function Create() {
       alert("Please enter a message!");
       return;
     }
-  
+
     setLoading(true);
     setError(null);
-  
+    const prompt = `A beautiful plant with the theme "${theme}" and decorations like "${decorations.join(", ")}". The plant is styled to match the message: "${message}"`;
     try {
-      const response = await axios.get("https://api.unsplash.com/photos/random", {
-        params: {
-          query: theme,
-          count: 1,
-          client_id: "Ei5L_WMwdu5qTDzm6UuWKChYUzdpGfpPMABrDr5zU4c",
-          orientation: "landscape",
-        },
-      });
-  
+      const response = await axios.get(
+        "https://api.unsplash.com/photos/random",
+        {
+          params: {
+            query: prompt,
+            count: 1,
+            client_id: "Ei5L_WMwdu5qTDzm6UuWKChYUzdpGfpPMABrDr5zU4c",
+            orientation: "landscape",
+          },
+        }
+      );
 
       const imageUrl = response.data[0]?.urls?.regular;
       console.log(imageUrl);
       if (!imageUrl) throw new Error("Failed to fetch the image.");
-  
+
       const img = new Image();
       img.crossOrigin = "Anonymous";
       img.onload = () => {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
-  
+
         if (!ctx) throw new Error("Canvas context not available.");
-  
+
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
-  
+
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const encodedData = encodeMessageIntoImage(imageData.data, message);
-  
-        ctx.putImageData(new ImageData(encodedData, canvas.width, canvas.height), 0, 0);
+
+        ctx.putImageData(
+          new ImageData(encodedData, canvas.width, canvas.height),
+          0,
+          0
+        );
         setGeneratedImage(canvas.toDataURL());
         setShowPopover(true);
       };
-  
+
       img.src = imageUrl;
     } catch (err) {
       console.error(err);
@@ -65,23 +74,30 @@ export default function Create() {
       setLoading(false);
     }
   };
-  
+
   // Ensure clean data encoding and improved handling.
-  const encodeMessageIntoImage = (data: Uint8ClampedArray, message: string): Uint8ClampedArray => {
-    const messageBits = new Uint8Array(new TextEncoder().encode(message)).reduce((acc, byte) => {
-      return acc.concat(Array.from({ length: 8 }, (_, i) => (byte >> (7 - i)) & 1));
+  const encodeMessageIntoImage = (
+    data: Uint8ClampedArray,
+    message: string
+  ): Uint8ClampedArray => {
+    const messageBits = new Uint8Array(
+      new TextEncoder().encode(message)
+    ).reduce((acc, byte) => {
+      return acc.concat(
+        Array.from({ length: 8 }, (_, i) => (byte >> (7 - i)) & 1)
+      );
     }, [] as number[]);
-  
+
     // Append null terminator bits (eight zeros) to mark message end
     messageBits.push(...Array(8).fill(0));
-  
+
     let bitIndex = 0;
     for (let i = 0; i < data.length && bitIndex < messageBits.length; i += 4) {
       data[i] = (data[i] & ~1) | messageBits[bitIndex++];
     }
     return data;
   };
-    
+
   const handleClose = () => {
     setShowPopover(false);
     setGeneratedImage(null);
@@ -122,8 +138,8 @@ export default function Create() {
             />
           </button>
         </div>
-
-        <div className="mt-8">
+              {/* Theme Options */}
+              <div className="mt-8">
           <h2 className="mb-4 text-lg">Theme</h2>
           <div className="flex gap-4">
             {["Romantic", "Playful", "Inspiring"].map((item) => (
@@ -150,12 +166,56 @@ export default function Create() {
             ))}
           </div>
         </div>
+
+        {/* Decorative Elements */}
+        <div className="mt-8">
+          <h2 className="mb-4 text-lg">Decorative Elements</h2>
+          <div className="flex gap-4">
+            {["Butterflies", "Raindrops"].map((item) => (
+              <label key={item} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  className="accent-green-500"
+                  checked={decorations.includes(item)}
+                  onChange={() => {
+                    setDecorations((prev) =>
+                      prev.includes(item)
+                        ? prev.filter((decoration) => decoration !== item)
+                        : [...prev, item]
+                    );
+                  }}
+                />
+                {item}
+              </label>
+            ))}
+          </div>
+        </div>
+
         <div className="mt-8">
           <h2 className="mb-4 text-lg">Encrypt Your Message</h2>
           <label className="flex items-center gap-2">
-            <input type="checkbox" className="accent-green-500" />
+            <input
+              type="checkbox"
+              className="accent-green-500"
+              checked={encrypt}
+              onChange={(e) => setEncrypt(e.target.checked)}
+            />
             Encrypt your message
           </label>
+          {encrypt && (
+            <div className="mt-4">
+              <label className="block mb-2 text-sm font-medium text-white">
+                Password
+              </label>
+              <input
+                type="password"
+                className="w-full p-2 text-sm bg-forestGreen text-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+                placeholder="Enter a password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+          )}
         </div>
         {loading && (
           <div className="h-screen w-full flex justify-center items-center">
@@ -165,7 +225,11 @@ export default function Create() {
         {error && <p className="mt-4 text-red-500">{error}</p>}
         <AnimatePresence>
           {showPopover && (
-            <PopoverContent handleClose={handleClose} generatedImage={generatedImage} message={message} />
+            <PopoverContent
+              handleClose={handleClose}
+              generatedImage={generatedImage}
+              message={message}
+            />
           )}
         </AnimatePresence>
       </div>
