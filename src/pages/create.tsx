@@ -55,7 +55,12 @@ export default function Create() {
         ctx.drawImage(img, 0, 0);
 
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const encodedData = encodeMessageIntoImage(imageData.data, message);
+        const encodedData = encodeMessageIntoImage(
+          imageData.data,
+          message,
+          encrypt ? password : null
+        );
+        
 
         ctx.putImageData(
           new ImageData(encodedData, canvas.width, canvas.height),
@@ -78,25 +83,33 @@ export default function Create() {
   // Ensure clean data encoding and improved handling.
   const encodeMessageIntoImage = (
     data: Uint8ClampedArray,
-    message: string
+    message: string,
+    password: string | null
   ): Uint8ClampedArray => {
+    console.log(password);
+    const finalMessage = password
+      ? btoa(`${password}:${message}`)
+      : message;
+    
+      
     const messageBits = new Uint8Array(
-      new TextEncoder().encode(message)
+      new TextEncoder().encode(finalMessage)
     ).reduce((acc, byte) => {
       return acc.concat(
         Array.from({ length: 8 }, (_, i) => (byte >> (7 - i)) & 1)
       );
     }, [] as number[]);
-
-    // Append null terminator bits (eight zeros) to mark message end
+  
+    // Append null terminator bits
     messageBits.push(...Array(8).fill(0));
-
+  
     let bitIndex = 0;
     for (let i = 0; i < data.length && bitIndex < messageBits.length; i += 4) {
       data[i] = (data[i] & ~1) | messageBits[bitIndex++];
     }
     return data;
   };
+  
 
   const handleClose = () => {
     setShowPopover(false);

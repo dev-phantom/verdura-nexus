@@ -5,10 +5,11 @@ import HowItWorksHeader from "../components/shared/howItWorkHeader";
 import DefaultLayout from "../layout/defaultLayout";
 
 export default function Decrypt() {
-  const [imageSelected, setImageSelected] = useState(false);
   const [decodedMessage, setDecodedMessage] = useState("");
+  const [showPopover, setShowPopover] = useState(false);
+
   const handleClose = () => {
-    setImageSelected(false);
+    setShowPopover(false)
   };
 
   const decodeMessageFromImage = (data: Uint8ClampedArray): string => {
@@ -20,12 +21,31 @@ export default function Decrypt() {
     const bytes: number[] = [];
     for (let i = 0; i < bits.length; i += 8) {
       const byte = bits.slice(i, i + 8).reduce((acc, bit, index) => acc | (bit << (7 - index)), 0);
-      if (byte === 0) break; // Stop at null terminator
+      if (byte === 0) break;
       bytes.push(byte);
     }
   
-    return new TextDecoder().decode(Uint8Array.from(bytes));
+    const rawMessageEncoded = new TextDecoder().decode(Uint8Array.from(bytes));
+    const rawMessage = window.atob(rawMessageEncoded);
+
+    const [possiblePassword, decodedMessage] = rawMessage.includes(":")
+      ? rawMessage.split(":")
+      : [null, rawMessage];
+  
+    if (possiblePassword && !window.confirm("Password required. Enter it to proceed.")) {
+      setShowPopover(false);
+      const userPassword = prompt("Enter the password:");
+      if (userPassword !== possiblePassword) {
+        alert("Incorrect password!");
+        return "";
+      }else{
+        setShowPopover(true);
+      }
+    }
+  
+    return decodedMessage;
   };
+
   
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -50,7 +70,7 @@ export default function Decrypt() {
             decodeMessageFromImage(colors);
           const message = decodeMessage(pixelData.data);
           setDecodedMessage(message || "No message found!");
-          setImageSelected(true);
+          setShowPopover(true);
         };
         img.src = e.target?.result as string;
       };
@@ -124,7 +144,7 @@ export default function Decrypt() {
 
         {/* Popover */}
         <AnimatePresence>
-          {imageSelected && (
+          {showPopover && (
             <motion.div
               className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
               initial={{ opacity: 0 }}
