@@ -9,12 +9,34 @@ export default function PopoverContent({
   generatedImage: string | null;
   message: string;
 }) {
-  function downloadImage(imageUrl: string) {
+  async function downloadImage(imageUrl: string) {
     const link = document.createElement("a");
     link.href = imageUrl;
-    link.download = "generated_image.png"; // Set a default filename
+    link.download = "generated_image.png";
     link.click();
   }
+
+  async function shareImageAsDocument(imageUrl: string) {
+    try {
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      const file = new File([blob], "generated_image.png", { type: blob.type });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: "Generated Plant Image",
+          text: "Check out this personalized plant message!",
+        });
+      } else {
+        alert("Sharing is not supported on this device. Please download and share manually.");
+      }
+    } catch (error) {
+      console.error("Error sharing image:", error);
+      alert("Failed to share the image. Please try again.");
+    }
+  }
+
   return (
     <motion.div
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
@@ -56,12 +78,20 @@ export default function PopoverContent({
         <p className="text-sm text-gray-400 mb-2">
           Your Message: <strong>{message || "love you forever"}</strong>
         </p>
-        <button
-          className="px-4 py-2 bg-green-600 rounded-full text-white shadow-md hover:bg-green-700"
-          onClick={() => generatedImage && downloadImage(generatedImage)}
-        >
-          Download Image
-        </button>
+        <div className="flex flex-col gap-5 justify-center ">
+          <button
+            className="px-4 py-2 bg-green-600 rounded-full text-white shadow-md hover:bg-green-700"
+            onClick={() => generatedImage && downloadImage(generatedImage)}
+          >
+            Download
+          </button>
+          <button
+            className="px-4 py-2 w-full bg-blue-600 rounded-full text-white shadow-md hover:bg-blue-700"
+            onClick={() => generatedImage && shareImageAsDocument(generatedImage)}
+          >
+            Share 
+          </button>
+        </div>
       </motion.div>
     </motion.div>
   );
