@@ -26,8 +26,15 @@ export default function Decrypt() {
     }
   
     const rawMessageEncoded = new TextDecoder().decode(Uint8Array.from(bytes));
-    const rawMessage = window.atob(rawMessageEncoded);
+    
+    // Check if the message is valid base64
+    const isBase64 = (str: string) => /^[A-Za-z0-9+/]+={0,2}$/.test(str);
+    if (!isBase64(rawMessageEncoded)) {
+      alert("Failed to decode message: Invalid base64 format.");
+      return "";
+    }
   
+    const rawMessage = window.atob(rawMessageEncoded);
     const [possiblePassword, decodedMessage] = rawMessage.includes(":")
       ? rawMessage.split(":")
       : [null, rawMessage];
