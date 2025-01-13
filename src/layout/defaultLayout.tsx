@@ -5,6 +5,8 @@ import { LayoutProps } from "../interface/layout";
 export default function DefaultLayout({
   children,
   blobImg,
+  blobImgTablet,
+  blobImgMobile,
   showBrandName = false,
   title,
   subTitle,
@@ -18,6 +20,8 @@ export default function DefaultLayout({
     <div className="bg-darkGreen w-full text-white overflow-hidden">
       <Hero
         blobImg={blobImg}
+        blobImgTablet={blobImgTablet}
+        blobImgMobile={blobImgMobile}
         showBrandName={showBrandName}
         title={title}
         subTitle={subTitle}

@@ -1,5 +1,7 @@
 export interface HeroLayoutProps {
   blobImg?: string;
+  blobImgTablet?: string;
+  blobImgMobile?: string;
   blobImgHeight?: string;
   showBrandName?: boolean;
   title?: string;

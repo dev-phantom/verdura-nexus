@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
+import { useMediaQuery } from "react-responsive";
 
 const flowerImages = [
   "https://res.cloudinary.com/phantom1245/image/upload/v1733545754/verdura-nexus/plant-8360682_1280-removebg-preview_ntbrsn.png",
@@ -12,6 +13,26 @@ const flowerImages = [
 
 export default function Slider() {
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const isTablet = useMediaQuery({
+    query: "(min-width: 769px) and (max-width: 1024px)",
+  });
+
+  // Image URLs for each screen size
+  const mobileImage =
+    "https://res.cloudinary.com/phantom1245/image/upload/v1736788254/verdura-nexus/Rectangle_3_8_nbstjr.png";
+  const tabletImage =
+    "https://res.cloudinary.com/phantom1245/image/upload/v1733607340/verdura-nexus/Rectangle_2_1_ddmgpp.png";
+  const desktopImage =
+    "https://res.cloudinary.com/phantom1245/image/upload/v1733607340/verdura-nexus/Rectangle_2_1_ddmgpp.png";
+
+  // Determine the selected image based on screen size
+  const selectedImage = isMobile
+    ? mobileImage
+    : isTablet
+    ? tabletImage
+    : desktopImage;
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
@@ -29,12 +50,12 @@ export default function Slider() {
     if (index === currentIndex)
       return "z-20 scale-150 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"; // Center active image
     if (index === (currentIndex + 1) % flowerImages.length)
-      return "z-10 -bottom-32 left-32 scale-75"; // Right-bottom next image
+      return "z-10 -bottom-32 left-32 scale-75 hidden md:flex"; // Right-bottom next image
     if (
       index ===
       (currentIndex - 1 + flowerImages.length) % flowerImages.length
     )
-      return "z-10 -bottom-32 right-32 scale-90"; // Left-bottom previous image
+      return "z-10 -bottom-32 right-32 scale-90 hidden md:flex"; // Left-bottom previous image
     return "z-0 opacity-0"; // Hide non-adjacent images
   };
 
@@ -48,13 +69,13 @@ export default function Slider() {
   return (
     <div
       {...swipeHandlers}
-      className="relative -top-10 isolate aspect-video w-full mx-auto rounded-xl shadow-lg bg-contain bg-no-repeat bg-center flex items-center justify-center mb-10"
+      className="relative -top-10 isolate aspect-video w-[95%] md:w-full h-[80vh] md:h-screen mx-auto rounded-xl shadow-lg bg-cover md:bg-contain bg-no-repeat bg-center flex items-center justify-center my-10"
       style={{
-        backgroundImage: `url('https://res.cloudinary.com/phantom1245/image/upload/v1733607340/verdura-nexus/Rectangle_2_1_ddmgpp.png')`,
+        backgroundImage: `url(${selectedImage})`,
       }}
     >
       {/* Slider Container */}
-      <div className="relative flex items-center justify-center h-[60vh] w-full">
+      <div className="relative flex items-center justify-center md:h-[60vh] w-full">
         {flowerImages.map((image, index) => (
           <motion.div
             key={index}
@@ -73,16 +94,24 @@ export default function Slider() {
 
       {/* Navigation Buttons */}
       <button
-        className="absolute left-5 bg-orange-400 px-4 py-2 rounded-full hover:bg-orange-600 focus:outline-none"
+        className="absolute left-5 bg-white text-green-900 px-2 py-2 rounded-full hover:bg-orange-600 focus:outline-none"
         onClick={handlePrev}
       >
-        &#8249;
+        <img
+          src="https://res.cloudinary.com/phantom1245/image/upload/v1736788620/verdura-nexus/tdesign_arrow-left_hmk4h2.png"
+          alt="arrow icon"
+          className="w-5 rotate-180"
+        />
       </button>
       <button
-        className="absolute right-5 bg-orange-400 px-4 py-2 rounded-full hover:bg-orange-600 focus:outline-none"
+        className="absolute right-5 bg-white text-green-900 px-2 py-2 rounded-full hover:bg-orange-600 focus:outline-none"
         onClick={handleNext}
       >
-        &#8250;
+        <img
+          src="https://res.cloudinary.com/phantom1245/image/upload/v1736788620/verdura-nexus/tdesign_arrow-left_hmk4h2.png"
+          alt="arrow icon"
+          className="w-5 "
+        />
       </button>
     </div>
   );

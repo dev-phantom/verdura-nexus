@@ -24,7 +24,9 @@ export default function Create() {
 
     setLoading(true);
     setError(null);
-    const prompt = `A beautiful plant with the theme "${theme}" and decorations like "${decorations.join(", ")}". The plant is styled to match the message: "${message}"`;
+    const prompt = `A beautiful plant with the theme "${theme}" and decorations like "${decorations.join(
+      ", "
+    )}". The plant is styled to match the message: "${message}"`;
     try {
       const response = await axios.get(
         "https://api.unsplash.com/photos/random",
@@ -39,7 +41,6 @@ export default function Create() {
       );
 
       const imageUrl = response.data[0]?.urls?.regular;
-      console.log(imageUrl);
       if (!imageUrl) throw new Error("Failed to fetch the image.");
 
       const img = new Image();
@@ -60,7 +61,6 @@ export default function Create() {
           message,
           encrypt ? password : null
         );
-        
 
         ctx.putImageData(
           new ImageData(encodedData, canvas.width, canvas.height),
@@ -89,8 +89,7 @@ export default function Create() {
     const finalMessage = password
       ? btoa(`${password}:${message}`)
       : btoa(message);
-    
-      
+
     const messageBits = new Uint8Array(
       new TextEncoder().encode(finalMessage)
     ).reduce((acc, byte) => {
@@ -98,17 +97,16 @@ export default function Create() {
         Array.from({ length: 8 }, (_, i) => (byte >> (7 - i)) & 1)
       );
     }, [] as number[]);
-  
+
     // Append null terminator bits
     messageBits.push(...Array(8).fill(0));
-  
+
     let bitIndex = 0;
     for (let i = 0; i < data.length && bitIndex < messageBits.length; i += 4) {
       data[i] = (data[i] & ~1) | messageBits[bitIndex++];
     }
     return data;
   };
-  
 
   const handleClose = () => {
     setShowPopover(false);
@@ -118,6 +116,7 @@ export default function Create() {
   return (
     <DefaultLayout
       blobImg="https://res.cloudinary.com/phantom1245/image/upload/v1733779338/verdura-nexus/Rectangle_1_1_n6uooh.png"
+      blobImgMobile="https://res.cloudinary.com/phantom1245/image/upload/v1736786621/verdura-nexus/Rectangle_4_uollad.png"
       showBrandName={false}
       showImg={false}
       title="Create Your Personalized Plant Message"
@@ -126,13 +125,13 @@ export default function Create() {
       containerWidth="[90%]"
       blobImgHeight="[40rem]"
     >
-      <div id="creating" className="py-16 px-12 text-white">
+      <div id="creating" className="py-16 px-5 md:px-12 text-white">
         <HowItWorksHeader
           title="Craft Your Message"
           description="Scroll Down for customizable options to enhance your image"
         />
 
-        <div className="mt-8 relative w-[80%] h-40">
+        <div className="mt-8 relative w-full md:w-[80%] h-40">
           <textarea
             className="w-full h-full p-4 text-sm bg-forestGreen text-white rounded-xl placeholder-gray-400 focus:outline-none"
             placeholder="Type your personalized message here..."
@@ -150,14 +149,14 @@ export default function Create() {
             />
           </button>
         </div>
-              {/* Theme Options */}
-              <div className="mt-8">
+        {/* Theme Options */}
+        <div className="mt-8">
           <h2 className="mb-4 text-lg">Theme</h2>
           <div className="flex gap-4">
             {["Romantic", "Playful", "Inspiring"].map((item) => (
               <button
                 key={item}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
+                className={`flex items-center gap-2 px-2 md:px-4 py-2 rounded-lg ${
                   theme === item ? "bg-green-700" : "bg-[#1b2b1d]"
                 } hover:bg-[#243730]`}
                 onClick={() => setTheme(item)}
@@ -230,7 +229,7 @@ export default function Create() {
           )}
         </div>
         {loading && (
-          <div className="h-screen w-full flex justify-center items-center">
+          <div className="fixed bg-green-50 top-0 left-0 h-screen w-full flex justify-center items-center">
             <div className="loader"></div>
           </div>
         )}

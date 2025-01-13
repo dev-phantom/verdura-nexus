@@ -6,7 +6,7 @@ export const Navbar = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="w-[65%] flex justify-between items-center pt-4 px-4 flex-wrap gap-2">
+    <div className="lg:w-[65%] w-[96%] flex justify-between items-center pt-4 px-4 gap-2">
       {/* Logo */}
       <motion.div
         initial={{ x: -100, y: -100, opacity: 0 }}
@@ -16,7 +16,7 @@ export const Navbar = () => {
         <img
           src="https://res.cloudinary.com/phantom1245/image/upload/v1733542826/verdura-nexus/Frame_2_1_qdahuf.png"
           alt="logo"
-          className="w-[4rem] h-[4rem]"
+          className="w-[3rem] h-[3rem] sm:w-[4rem] sm:h-[4rem]"
         />
       </motion.div>
 
@@ -62,7 +62,7 @@ export const Navbar = () => {
             >
               {[
                 { name: "Home", link: "/" },
-                { name: "How It Works", link: "/how-it-works" },
+                { name: "How It Works", link: "/#howItWorks" },
                 { name: "Create", link: "/create" },
                 { name: "Decrypt", link: "/decrypt" },
               ].map((item) => (
