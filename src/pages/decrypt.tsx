@@ -27,57 +27,49 @@ export default function Decrypt() {
   
     const rawMessageEncoded = new TextDecoder().decode(Uint8Array.from(bytes));
     const rawMessage = window.atob(rawMessageEncoded);
-
+  
     const [possiblePassword, decodedMessage] = rawMessage.includes(":")
       ? rawMessage.split(":")
       : [null, rawMessage];
   
-    if (possiblePassword && !window.confirm("Password required. Enter it to proceed.")) {
-      setShowPopover(false);
-      const userPassword = prompt("Enter the password:");
+    if (possiblePassword) {
+      const userPassword = prompt("Enter the password to view the message:");
       if (userPassword !== possiblePassword) {
         alert("Incorrect password!");
         return "";
-      }else{
-        setShowPopover(true);
       }
     }
   
+    setShowPopover(true);
     return decodedMessage;
   };
-
   
-  const handleImageUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const img = new Image();
       const reader = new FileReader();
-
+  
       reader.onload = (e) => {
         img.onload = () => {
           const canvas = document.createElement("canvas");
           const ctx = canvas.getContext("2d");
           if (!ctx) return;
-
+  
           canvas.width = img.width;
           canvas.height = img.height;
           ctx.drawImage(img, 0, 0);
-
+  
           const pixelData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          const decodeMessage = (colors: Uint8ClampedArray): string =>
-            decodeMessageFromImage(colors);
-          const message = decodeMessage(pixelData.data);
+          const message = decodeMessageFromImage(pixelData.data);
           setDecodedMessage(message || "No message found!");
-          setShowPopover(true);
         };
         img.src = e.target?.result as string;
       };
-
+  
       reader.readAsDataURL(file);
     }
-  };
+  };  
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(decodedMessage).then(() => {

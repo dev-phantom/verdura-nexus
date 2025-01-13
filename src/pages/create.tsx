@@ -86,10 +86,9 @@ export default function Create() {
     message: string,
     password: string | null
   ): Uint8ClampedArray => {
-    console.log(password);
     const finalMessage = password
       ? btoa(`${password}:${message}`)
-      : message;
+      : btoa(message);
     
       
     const messageBits = new Uint8Array(
