@@ -5,39 +5,88 @@ import HowItWorksHeader from "../components/shared/howItWorkHeader";
 import DefaultLayout from "../layout/defaultLayout";
 
 export default function Decrypt() {
-  const [imageSelected, setImageSelected] = useState(false);
-  const [uploadedFile, setUploadedFile] = useState<string | null>(null);
   const [decodedMessage, setDecodedMessage] = useState("");
+  const [showPopover, setShowPopover] = useState(false);
+
   const handleClose = () => {
-    setImageSelected(false);
+    setShowPopover(false)
   };
 
-  console.log(uploadedFile);
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]; // Add optional chaining
-    if (file) {
-      setUploadedFile(URL.createObjectURL(file)); // Create a preview URL
-      setImageSelected(true); // Show the popover
+  const decodeMessageFromImage = (data: Uint8ClampedArray): string => {
+    const bits: number[] = [];
+    for (let i = 0; i < data.length; i += 4) {
+      bits.push(data[i] & 1);
     }
+  
+    const bytes: number[] = [];
+    for (let i = 0; i < bits.length; i += 8) {
+      const byte = bits.slice(i, i + 8).reduce((acc, bit, index) => acc | (bit << (7 - index)), 0);
+      if (byte === 0) break;
+      bytes.push(byte);
+    }
+  
+    const rawMessageEncoded = new TextDecoder().decode(Uint8Array.from(bytes));
+    const rawMessage = window.atob(rawMessageEncoded);
+  
+    const [possiblePassword, decodedMessage] = rawMessage.includes(":")
+      ? rawMessage.split(":")
+      : [null, rawMessage];
+  
+    if (possiblePassword) {
+      const userPassword = prompt("Enter the password to view the message:");
+      if (userPassword !== possiblePassword) {
+        alert("Incorrect password!");
+        return "";
+      }
+    }
+  
+    setShowPopover(true);
+    return decodedMessage;
   };
+  
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const img = new Image();
+      const reader = new FileReader();
+  
+      reader.onload = (e) => {
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          if (!ctx) return;
+  
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+  
+          const pixelData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const message = decodeMessageFromImage(pixelData.data);
+          setDecodedMessage(message || "No message found!");
+        };
+        img.src = e.target?.result as string;
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  };  
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(decodedMessage).then(() => {
       alert("Message copied to clipboard!");
     });
   };
-  setDecodedMessage("Hi there! Just like a sunflower turns to face the sun, my thoughts turn to you every day. 🌻 Keep shining bright!");
+
   return (
     <DefaultLayout
       blobImg="https://res.cloudinary.com/phantom1245/image/upload/v1733779338/verdura-nexus/Rectangle_1_1_n6uooh.png"
       showBrandName={false}
       showImg={false}
-      title="Decrypt Your PersonalizedPlant Message"
+      title="Decrypt Your Personalized Plant Message"
       subTitle="Upload your encrypted plant image to reveal the hidden message. Your secret message awaits!"
       buttonText="Start Decrypt"
-      containerWidth="[95%]"
-      blobImgHeight="[40rem]"
+      containerWidth="[100%]"
+      blobImgHeight="[20rem]"
       buttonLink="/decrypt#decrypting"
     >
       <div id="#decrypting" className="py-16 px-12 text-white">
@@ -62,9 +111,9 @@ export default function Decrypt() {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                 />
               </svg>
@@ -87,7 +136,7 @@ export default function Decrypt() {
 
         {/* Popover */}
         <AnimatePresence>
-          {imageSelected && (
+          {showPopover && (
             <motion.div
               className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
               initial={{ opacity: 0 }}

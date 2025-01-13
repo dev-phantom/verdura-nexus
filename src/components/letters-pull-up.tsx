@@ -1,18 +1,19 @@
 import { cn } from '../lib/utils/cn';
 import { motion, useInView } from 'framer-motion';
 import * as React from 'react';
- 
+
 export function LettersPullUp({
   text,
   className = '',
-  containerWidth= "full"
+  containerWidth = 'full',
 }: {
   text: string;
   className?: string;
-  containerWidth?:string;
+  containerWidth?: string;
 }) {
-  const splittedText = text.split('');
- 
+  // Split the text into words
+  const words = text.split(' ');
+
   const pullupVariant = {
     initial: { y: 10, opacity: 0 },
     animate: (i: number) => ({
@@ -23,25 +24,50 @@ export function LettersPullUp({
       },
     }),
   };
+
   const ref = React.useRef(null);
   const isInView = useInView(ref, { once: true });
+
   return (
     <div className={`flex flex-wrap w-${containerWidth}`}>
-      {splittedText.map((current, i) => (
-        <motion.div
-          key={i}
-          ref={ref}
-          variants={pullupVariant}
-          initial="initial"
-          animate={isInView ? 'animate' : ''}
-          custom={i}
-          className={cn(
-            'font-playfair text-6xl leading-[4rem]',
-            className
-          )}
+      {words.map((word, wordIndex) => (
+        <span
+          key={wordIndex}
+          className="inline-flex whitespace-nowrap" // Prevent line breaks within a word
         >
-          {current == ' ' ? <span>&nbsp;</span> : current}
-        </motion.div>
+          {word.split('').map((letter, letterIndex) => (
+            <motion.div
+              key={`${wordIndex}-${letterIndex}`}
+              ref={ref}
+              variants={pullupVariant}
+              initial="initial"
+              animate={isInView ? 'animate' : ''}
+              custom={wordIndex * 10 + letterIndex} // Unique delay per letter
+              className={cn(
+                'font-playfair text-6xl leading-[4rem]',
+                className
+              )}
+            >
+              {letter}
+            </motion.div>
+          ))}
+          {/* Add a non-breaking space between words */}
+          {wordIndex < words.length - 1 && (
+            <motion.div
+              ref={ref}
+              variants={pullupVariant}
+              initial="initial"
+              animate={isInView ? 'animate' : ''}
+              custom={wordIndex * 10 + word.length} // Unique delay for spaces
+              className={cn(
+                'font-playfair text-6xl leading-[4rem]',
+                className
+              )}
+            >
+              &nbsp;
+            </motion.div>
+          )}
+        </span>
       ))}
     </div>
   );

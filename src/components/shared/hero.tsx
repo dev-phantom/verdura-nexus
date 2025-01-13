@@ -43,7 +43,7 @@ export default function Hero({
       >
         <div className="w-[95%] mx-auto pt-4 static">
           {/* Container for image and text */}
-          <div className="relative w-full">
+          <div className="relative w-full h-full">
             {/* Background Image */}
             <motion.img
               src={
@@ -61,7 +61,7 @@ export default function Hero({
             <div className="absolute inset-0 flex justify-start items-start flex-col">
               <Navbar />
               <motion.div
-                className="w-full pt-16 flex justify-between h-full items-center"
+                className="w-full flex justify-between h-full items-center"
                 initial={{ opacity: 0, x: -100 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1.5 }}
