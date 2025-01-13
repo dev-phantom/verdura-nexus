@@ -80,6 +80,7 @@ export default function Decrypt() {
   return (
     <DefaultLayout
       blobImg="https://res.cloudinary.com/phantom1245/image/upload/v1733779338/verdura-nexus/Rectangle_1_1_n6uooh.png"
+      blobImgMobile="https://res.cloudinary.com/phantom1245/image/upload/v1736786621/verdura-nexus/Rectangle_4_uollad.png"
       showBrandName={false}
       showImg={false}
       title="Decrypt Your Personalized Plant Message"

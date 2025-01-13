@@ -7,6 +7,8 @@ import { useMediaQuery } from "react-responsive";
 
 export default function Hero({
   blobImg,
+  blobImgTablet,
+  blobImgMobile,
   showBrandName = false,
   title,
   subTitle,
@@ -17,19 +19,24 @@ export default function Hero({
 }: HeroLayoutProps) {
   const navigate = useNavigate();
 
+  // Media queries for screen sizes
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
   const isTablet = useMediaQuery({ query: "(min-width: 769px) and (max-width: 1024px)" });
-  
-  // Image URLs for each screen size
-  const mobileImage =
+
+  // Default image URLs (can be overridden via props)
+  const defaultMobileImage =
     "https://res.cloudinary.com/phantom1245/image/upload/v1736785000/verdura-nexus/Rectangle_3_6_vw1b0a.png";
-  const tabletImage =
+  const defaultTabletImage =
     "https://res.cloudinary.com/phantom1245/image/upload/v1736783238/verdura-nexus/Rectangle_1_2_ur1zs4.png";
-  const desktopImage =
+  const defaultDesktopImage =
     "https://res.cloudinary.com/phantom1245/image/upload/v1733542824/verdura-nexus/Rectangle_1_ixw2gg.png";
-  
-  // Determine the selected image based on screen size
-  const selectedImage = blobImg || (isMobile ? mobileImage : isTablet ? tabletImage : desktopImage);
+
+  // Determine the selected image based on screen size and props
+  const selectedImage =
+    (isMobile && (blobImgMobile || defaultMobileImage)) ||
+    (isTablet && (blobImgTablet || defaultTabletImage)) ||
+    blobImg ||
+    defaultDesktopImage;
 
   const handleClick = () => {
     const path = (buttonLink || "/create").split("#")[0];
