@@ -29,7 +29,7 @@ export function LettersPullUp({
   const isInView = useInView(ref, { once: true });
 
   return (
-    <div className={`flex flex-wrap w-${containerWidth}`}>
+    <div className={`flex flex-wrap sm:w-${containerWidth} w-full`}>
       {words.map((word, wordIndex) => (
         <span
           key={wordIndex}
@@ -44,7 +44,7 @@ export function LettersPullUp({
               animate={isInView ? 'animate' : ''}
               custom={wordIndex * 10 + letterIndex} // Unique delay per letter
               className={cn(
-                'font-playfair text-6xl leading-[4rem]',
+                'font-playfair  text-3xl md:text-3xl lg:text-6xl leading-tight lg:leading-[4rem]',
                 className
               )}
             >
@@ -60,7 +60,7 @@ export function LettersPullUp({
               animate={isInView ? 'animate' : ''}
               custom={wordIndex * 10 + word.length} // Unique delay for spaces
               className={cn(
-                'font-playfair text-6xl leading-[4rem]',
+                'font-playfair text-3xl md:text-3xl lg:text-6xl leading-tight lg:leading-[4rem]',
                 className
               )}
             >

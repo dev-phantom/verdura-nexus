@@ -39,7 +39,6 @@ export default function Create() {
       );
 
       const imageUrl = response.data[0]?.urls?.regular;
-      console.log(imageUrl);
       if (!imageUrl) throw new Error("Failed to fetch the image.");
 
       const img = new Image();
