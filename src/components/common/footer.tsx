@@ -2,8 +2,8 @@ import React from "react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="my-3  mx-auto w-[95%] bg-clip-padding backdrop-filter bg-white bg-opacity-10 backdrop-blur-md mt-20 px-8 rounded-xl text-white ">
-      <div className="max-w-7xl py-20 font-poppins mx-auto px-6">
+    <footer className="my-3  mx-auto w-[95%] bg-clip-padding backdrop-filter bg-white bg-opacity-10 backdrop-blur-md mt-20 md:px-8 rounded-xl text-white ">
+      <div className="max-w-7xl py-10 md:py-20 font-poppins mx-auto px-6">
         {/* Quick Links */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-8">
           {/* Logo and Tagline */}
@@ -52,7 +52,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="https://twitter.com"
+                  href="https://x.com/phantom_favour"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-orange-400"
@@ -62,7 +62,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <a
-                  href="https://github.com"
+                  href="https://github.com/dev-phantom"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-orange-400"
@@ -72,7 +72,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <a
-                  href="https://linkedin.com"
+                  href="www.linkedin.com/in/dev-phantom"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-orange-400"
@@ -88,7 +88,7 @@ const Footer: React.FC = () => {
             <h3 className="font-semibold mb-2">External</h3>
             <ul className="space-y-3">
               <li>
-                <a href="/portfolio" className="hover:text-orange-400">
+                <a href="https://dev-phantom.netlify.app/" className="hover:text-orange-400">
                   Portfolio
                 </a>
               </li>

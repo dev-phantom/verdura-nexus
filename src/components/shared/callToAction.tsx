@@ -32,7 +32,7 @@ const CallToAction: React.FC<CallToActionProps> = ({
   };
   return (
     <div
-      className="h-[32rem] my-5 rounded-2xl w-[95%] flex justify-center items-center mx-auto bg-cover bg-center"
+      className="h-[32rem] my-0 md:my-5 rounded-2xl w-[95%] flex justify-center items-center mx-auto bg-cover bg-center"
       style={{
         backgroundImage: `url(${
           backgroundImgLink ||

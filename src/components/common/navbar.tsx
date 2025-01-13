@@ -62,7 +62,7 @@ export const Navbar = () => {
             >
               {[
                 { name: "Home", link: "/" },
-                { name: "How It Works", link: "/how-it-works" },
+                { name: "How It Works", link: "/#howItWorks" },
                 { name: "Create", link: "/create" },
                 { name: "Decrypt", link: "/decrypt" },
               ].map((item) => (

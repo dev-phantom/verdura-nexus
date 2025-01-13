@@ -90,14 +90,14 @@ export default function Decrypt() {
       blobImgHeight="[20rem]"
       buttonLink="/decrypt#decrypting"
     >
-      <div id="#decrypting" className="py-16 px-12 text-white">
+      <div id="#decrypting" className="py-16 px-5 md:px-12 text-white">
         <HowItWorksHeader
           title="Decrypt Your Message"
           description="Upload your plant image to reveal the hidden message within."
         />
 
         {/* Image Upload Section */}
-        <div className="flex items-center justify-center w-[80%]">
+        <div className="flex items-center justify-center w-full md:w-[80%]">
           <label
             htmlFor="dropzone-file"
             className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-forestGreen dark:bg-gray-700 dark:border-gray-600 dark:hover:border-white dark:hover:bg-gray-600"

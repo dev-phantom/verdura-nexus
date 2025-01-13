@@ -24,7 +24,7 @@ export default function PopoverContent({
       onClick={handleClose}
     >
       <motion.div
-        className="relative w-full max-w-2xl h-[90vh] overflow-y-auto bg-[#162415] p-8 rounded-xl text-center text-white"
+        className="relative w-[95%] max-w-2xl h-[90vh] overflow-y-auto bg-[#162415] p-8 rounded-xl text-center text-white"
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 50, opacity: 0 }}
