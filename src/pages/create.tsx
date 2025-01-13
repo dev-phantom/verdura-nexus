@@ -152,11 +152,11 @@ export default function Create() {
         {/* Theme Options */}
         <div className="mt-8">
           <h2 className="mb-4 text-lg">Theme</h2>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4">
             {["Romantic", "Playful", "Inspiring"].map((item) => (
               <button
                 key={item}
-                className={`flex items-center gap-2 px-2 md:px-4 py-2 rounded-lg ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
                   theme === item ? "bg-green-700" : "bg-[#1b2b1d]"
                 } hover:bg-[#243730]`}
                 onClick={() => setTheme(item)}
