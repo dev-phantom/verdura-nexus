@@ -8,89 +8,83 @@ import axios from "axios";
 export default function Create() {
   const [showPopover, setShowPopover] = useState(false);
   const [theme, setTheme] = useState("Romantic");
-  // const [decorations, setDecorations] = useState(["Butterflies"]);
   const [message, setMessage] = useState("");
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleGenerateImage = async () => {
+    if (!message) {
+      alert("Please enter a message!");
+      return;
+    }
+  
     setLoading(true);
     setError(null);
-
+  
     try {
       const response = await axios.get("https://api.unsplash.com/photos/random", {
         params: {
-          query: "plant",
+          query: theme,
           count: 1,
           client_id: "Ei5L_WMwdu5qTDzm6UuWKChYUzdpGfpPMABrDr5zU4c",
           orientation: "landscape",
         },
       });
+  
 
-      const imageUrl = response.data?.[0]?.urls?.regular;
+      const imageUrl = response.data[0]?.urls?.regular;
+      console.log(imageUrl);
       if (!imageUrl) throw new Error("Failed to fetch the image.");
-
-      // Load the image
-      const imageResponse = await fetch(imageUrl);
-      const imageBlob = await imageResponse.blob();
-
-      const img = await createImageBitmap(imageBlob);
-      const canvas = document.createElement("canvas");
-      canvas.width = img.width;
-      canvas.height = img.height;
-
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        // Draw the image on canvas
+  
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+  
+        if (!ctx) throw new Error("Canvas context not available.");
+  
+        canvas.width = img.width;
+        canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
-
-        // Encode the message in the image
-        encodeMessageIntoCanvas(ctx, message, img.width, img.height);
-
-        // Convert the canvas to a data URL
-        const encodedImage = canvas.toDataURL();
-        setGeneratedImage(encodedImage);
+  
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const encodedData = encodeMessageIntoImage(imageData.data, message);
+  
+        ctx.putImageData(new ImageData(encodedData, canvas.width, canvas.height), 0, 0);
+        setGeneratedImage(canvas.toDataURL());
         setShowPopover(true);
-      } else {
-        throw new Error("Failed to process the image.");
-      }
-    } catch (error) {
-      console.error(error);
-      setError("An error occurred while fetching the plant image. Please try again.");
+      };
+  
+      img.src = imageUrl;
+    } catch (err) {
+      console.error(err);
+      setError("Failed to generate the image. Please try again.");
     } finally {
       setLoading(false);
     }
   };
-
-    // Function to encode a message into canvas pixel data
-    const encodeMessageIntoCanvas = (
-      ctx: CanvasRenderingContext2D,
-      message: string,
-      width: number,
-      height: number
-    ) => {
-      const imageData = ctx.getImageData(0, 0, width, height);
-      const data = imageData.data;
   
-      // Convert the message to binary
-      const binaryMessage = message
-        .split("")
-        .map((char) => char.charCodeAt(0).toString(2).padStart(8, "0"))
-        .join("");
+  // Ensure clean data encoding and improved handling.
+  const encodeMessageIntoImage = (data: Uint8ClampedArray, message: string): Uint8ClampedArray => {
+    const messageBits = new Uint8Array(new TextEncoder().encode(message)).reduce((acc, byte) => {
+      return acc.concat(Array.from({ length: 8 }, (_, i) => (byte >> (7 - i)) & 1));
+    }, [] as number[]);
   
-      // Hide the binary message in the image's pixels
-      for (let i = 0; i < binaryMessage.length; i++) {
-        if (i * 4 >= data.length) break; // Avoid out-of-bounds
-        data[i * 4] = (data[i * 4] & 0xfe) | parseInt(binaryMessage[i]); // Modify the red channel
-      }
+    // Append null terminator bits (eight zeros) to mark message end
+    messageBits.push(...Array(8).fill(0));
   
-      // Write the modified pixel data back to the canvas
-      ctx.putImageData(imageData, 0, 0);
-    };
-
+    let bitIndex = 0;
+    for (let i = 0; i < data.length && bitIndex < messageBits.length; i += 4) {
+      data[i] = (data[i] & ~1) | messageBits[bitIndex++];
+    }
+    return data;
+  };
+    
   const handleClose = () => {
     setShowPopover(false);
+    setGeneratedImage(null);
   };
 
   return (

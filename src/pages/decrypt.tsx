@@ -6,18 +6,56 @@ import DefaultLayout from "../layout/defaultLayout";
 
 export default function Decrypt() {
   const [imageSelected, setImageSelected] = useState(false);
-  const [uploadedFile, setUploadedFile] = useState<string | null>(null);
   const [decodedMessage, setDecodedMessage] = useState("");
   const handleClose = () => {
     setImageSelected(false);
   };
 
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]; // Add optional chaining
+  const decodeMessageFromImage = (data: Uint8ClampedArray): string => {
+    const bits: number[] = [];
+    for (let i = 0; i < data.length; i += 4) {
+      bits.push(data[i] & 1);
+    }
+  
+    const bytes: number[] = [];
+    for (let i = 0; i < bits.length; i += 8) {
+      const byte = bits.slice(i, i + 8).reduce((acc, bit, index) => acc | (bit << (7 - index)), 0);
+      if (byte === 0) break; // Stop at null terminator
+      bytes.push(byte);
+    }
+  
+    return new TextDecoder().decode(Uint8Array.from(bytes));
+  };
+  
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
     if (file) {
-      setUploadedFile(URL.createObjectURL(file)); // Create a preview URL
-      setImageSelected(true); // Show the popover
+      const img = new Image();
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          if (!ctx) return;
+
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          const pixelData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const decodeMessage = (colors: Uint8ClampedArray): string =>
+            decodeMessageFromImage(colors);
+          const message = decodeMessage(pixelData.data);
+          setDecodedMessage(message || "No message found!");
+          setImageSelected(true);
+        };
+        img.src = e.target?.result as string;
+      };
+
+      reader.readAsDataURL(file);
     }
   };
 
@@ -26,7 +64,7 @@ export default function Decrypt() {
       alert("Message copied to clipboard!");
     });
   };
-  // setDecodedMessage("Hi there! Just like a sunflower turns to face the sun, my thoughts turn to you every day. 🌻 Keep shining bright!");
+
   return (
     <DefaultLayout
       blobImg="https://res.cloudinary.com/phantom1245/image/upload/v1733779338/verdura-nexus/Rectangle_1_1_n6uooh.png"
@@ -61,9 +99,9 @@ export default function Decrypt() {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                 />
               </svg>
