@@ -32,7 +32,7 @@ export default function Create() {
           params: {
             query: prompt,
             count: 1,
-            client_id: "Ei5L_WMwdu5qTDzm6UuWKChYUzdpGfpPMABrDr5zU4c",
+            client_id: import.meta.env.VITE_CLIENT_ID,
             orientation: "landscape",
           },
         }
