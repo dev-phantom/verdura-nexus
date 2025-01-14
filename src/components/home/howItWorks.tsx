@@ -102,7 +102,7 @@ const HowItWorks = () => {
                 <h3 className="text-xl md:text-2xl font-poppins font-semibold mb-4">
                   Watch It Grow
                 </h3>
-                <p className="w-full md:w-[60%] font-lato font-medium">
+                <p className="w-full md:w-[60%] text-sm sm:text-base font-lato font-medium">
                   Choose from a diverse range of plants, each with its own
                   unique design, to pair with your message. From vibrant flowers
                   to lush trees and decorative leaves, each plant serves as the

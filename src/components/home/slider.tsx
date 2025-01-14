@@ -94,7 +94,7 @@ export default function Slider() {
 
       {/* Navigation Buttons */}
       <button
-        className="absolute left-5 bg-white text-green-900 px-2 py-2 rounded-full hover:bg-orange-600 focus:outline-none"
+        className="absolute left-1 sm:left-5 bg-white text-green-900 px-2 py-2 rounded-full hover:bg-orange-600 focus:outline-none"
         onClick={handlePrev}
       >
         <img
@@ -104,7 +104,7 @@ export default function Slider() {
         />
       </button>
       <button
-        className="absolute right-5 bg-white text-green-900 px-2 py-2 rounded-full hover:bg-orange-600 focus:outline-none"
+        className="absolute right-1 sm:right-5 bg-white text-green-900 px-2 py-2 rounded-full hover:bg-orange-600 focus:outline-none"
         onClick={handleNext}
       >
         <img
