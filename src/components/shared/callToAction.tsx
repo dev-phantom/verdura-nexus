@@ -32,7 +32,7 @@ const CallToAction: React.FC<CallToActionProps> = ({
   };
   return (
     <div
-      className="h-[32rem] my-0 md:my-5 rounded-2xl w-[95%] flex justify-center items-center mx-auto bg-cover bg-center"
+      className="h-[20rem] md:h-[32rem] my-0 md:my-5 rounded-2xl w-[95%] flex justify-center items-center mx-auto bg-cover bg-center"
       style={{
         backgroundImage: `url(${
           backgroundImgLink ||
@@ -48,12 +48,12 @@ const CallToAction: React.FC<CallToActionProps> = ({
           viewport={{ amount: 0.4 }}
           className="text-center text-white px-6 md:px-12 max-w-2xl"
         >
-          <h1 className="text-3xl font-poppins md:text-4xl font-semibold mb-4">
+          <h1 className="text-xl font-poppins md:text-4xl font-semibold mb-4">
             {title || "Share Your Creation"}
           </h1>
-          <p className="text-sm font-lato font-medium md:text-base mb-6 leading-relaxed px-4">
+          <p className="text-sm font-lato font-medium md:text-base mb-6 md:leading-relaxed md:px-4">
             {description ||
-              "Choose from a diverse range of plants, each with its own unique design, to pair with your message. From vibrant flowers to lush trees and decorative leaves, each plant serves as the perfect visual backdrop to your message. These plants represent different emotions, moods, or themes, adding depth to your message’s meaning."}
+              " From vibrant flowers to lush trees and decorative leaves, each plant serves as the perfect visual backdrop to your message. These plants represent different emotions, moods, or themes, adding depth to your message’s meaning."}
           </p>
           <motion.button
             whileHover={{ scale: 1.1 }}

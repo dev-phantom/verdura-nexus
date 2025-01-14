@@ -62,8 +62,7 @@ export default function PopoverContent({
           🌸 Congratulations! Your Image is Ready 🌸
         </h2>
         <p className="mb-4">
-          Your personalized plant message has been successfully created. You can
-          now download, share, or customize further.
+          Your personalized plant message has been successfully created. <strong>please share as document</strong>
         </p>
         {generatedImage && (
           <img
