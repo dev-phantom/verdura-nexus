@@ -125,7 +125,7 @@ export default function Create() {
       containerWidth="[90%]"
       blobImgHeight="[40rem]"
     >
-      <div id="creating" className="flex flex-col items-center py-16 px-5 md:px-12 text-white">
+      <div id="creating" className="py-16 px-5 md:px-12 text-white">
         <HowItWorksHeader
           title="Craft Your Message"
           description="Scroll Down for customizable options to enhance your image"
