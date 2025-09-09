@@ -63,7 +63,7 @@ export default function Create() {
         );
 
         ctx.putImageData(
-          new ImageData(encodedData, canvas.width, canvas.height),
+          new ImageData(new Uint8ClampedArray(encodedData), canvas.width, canvas.height),
           0,
           0
         );
@@ -102,10 +102,12 @@ export default function Create() {
     messageBits.push(...Array(8).fill(0));
 
     let bitIndex = 0;
-    for (let i = 0; i < data.length && bitIndex < messageBits.length; i += 4) {
-      data[i] = (data[i] & ~1) | messageBits[bitIndex++];
+    // Create a copy to avoid mutating the original data
+    const result = new Uint8ClampedArray(data);
+    for (let i = 0; i < result.length && bitIndex < messageBits.length; i += 4) {
+      result[i] = (result[i] & ~1) | messageBits[bitIndex++];
     }
-    return data;
+    return result;
   };
 
   const handleClose = () => {
@@ -125,7 +127,7 @@ export default function Create() {
       containerWidth="[90%]"
       blobImgHeight="[40rem]"
     >
-      <div id="creating" className="py-16 px-5 md:px-12 text-white">
+      <div id="creating" className="flex flex-col py-16 px-5 md:px-12 text-white">
         <HowItWorksHeader
           title="Craft Your Message"
           description="Scroll Down for customizable options to enhance your image"

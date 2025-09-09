@@ -97,7 +97,7 @@ export default function Decrypt() {
       blobImgHeight="[20rem]"
       buttonLink="/decrypt#decrypting"
     >
-      <div id="#decrypting" className="py-16 px-5 md:px-12 text-white">
+      <div id="#decrypting" className="flex flex-col py-16 px-5 md:px-12 text-white">
         <HowItWorksHeader
           title="Decrypt Your Message"
           description="Upload your plant image to reveal the hidden message within."
