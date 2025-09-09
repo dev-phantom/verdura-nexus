@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router";
+import {HashLink} from "react-router-hash-link"
 
 const Footer: React.FC = () => {
   return (
@@ -24,24 +26,24 @@ const Footer: React.FC = () => {
             <h3 className="font-semibold mb-2">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <a href="/" className="hover:text-orange-400">
+                <Link to="/" className="hover:text-orange-400">
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#howItWorks" className="hover:text-orange-400">
+                <HashLink to="/#howItWorks" className="hover:text-orange-400">
                   How it works
-                </a>
+                </HashLink>
               </li>
               <li>
-                <a href="/create" className="hover:text-orange-400">
+                <Link to="/create" className="hover:text-orange-400">
                   Create
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/decrypt" className="hover:text-orange-400">
+                <Link to="/decrypt" className="hover:text-orange-400">
                   Decrypt
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -88,7 +90,7 @@ const Footer: React.FC = () => {
             <h3 className="font-semibold mb-2">External</h3>
             <ul className="space-y-3">
               <li>
-                <a href="https://dev-phantom.netlify.app/" className="hover:text-orange-400">
+                <a href="https://dev-phantom.netlify.app/" target="_blank" className="hover:text-orange-400">
                   Portfolio
                 </a>
               </li>
