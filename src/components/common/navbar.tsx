@@ -1,9 +1,19 @@
 import { motion } from "framer-motion";
 import { NavButton } from "../../assets/icon/navButton";
 import { useState } from "react";
+import { Link } from "react-router";
+import { HashLink } from "react-router-hash-link"; //aditional package
 
 export const Navbar = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  //Navigation items
+  const navItems = [
+    { name: "Home", link: "/" },
+    { name: "How It Works", link: "/#howItWorks" },
+    { name: "Create", link: "/create" },
+    { name: "Decrypt", link: "/decrypt" },
+  ];
 
   return (
     <div className="lg:w-[65%] w-[96%] flex justify-between items-center pt-4 px-4 gap-2">
@@ -25,21 +35,21 @@ export const Navbar = () => {
         <nav className="w-full">
           {/* Desktop Menu */}
           <motion.ul className="hidden md:flex gap-8 text-lg font-poppins">
-            {[
-              { name: "Home", link: "/" },
-              { name: "How It Works", link: "/#howItWorks" },
-              { name: "Create", link: "/create" },
-              { name: "Decrypt", link: "/decrypt" },
-            ].map((item, index) => (
-              <motion.li
-                key={item.name}
-                className="hover:text-orange-400 cursor-pointer"
-                whileHover={{ scale: 1.2 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <a href={item.link}>{item.name}</a>
-              </motion.li>
-            ))}
+            {navItems.map((item, index) => {
+              const isHashLink = item.link.includes("#");
+              const LinkComponent = isHashLink ? HashLink : Link; //conditional rendering of Nav links!
+
+              return (
+                <motion.li
+                  key={item.name}
+                  className="hover:text-orange-400 cursor-pointer"
+                  whileHover={{ scale: 1.2 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <LinkComponent smooth to={item.link}>{item.name}</LinkComponent>
+                </motion.li>
+              )
+            })}
           </motion.ul>
 
           {/* Mobile Menu Button */}
@@ -60,7 +70,7 @@ export const Navbar = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.3 }}
             >
-              {[
+              {/*[
                 { name: "Home", link: "/" },
                 { name: "How It Works", link: "/#howItWorks" },
                 { name: "Create", link: "/create" },
@@ -70,9 +80,25 @@ export const Navbar = () => {
                   key={item.name}
                   className="hover:text-orange-400 cursor-pointer"
                 >
-                  <a href={item.link}>{item.name}</a>
+                  <Link to={item.link}>{item.name}</Link>
                 </motion.li>
-              ))}
+              ))*/}
+              {navItems.map((item) => {
+                const isHashLink = item.link.includes("#");
+
+                const LinkComponent = isHashLink ? HashLink : Link;
+
+                return (
+                  <motion.li
+                    key={item.name}
+                    className="hover:text-orange-400 cursor-pointer"
+                  >
+                    <LinkComponent smooth to={item.link}>
+                      {item.name}
+                    </LinkComponent>
+                  </motion.li>
+                );
+              })}
             </motion.ul>
           )}
         </nav>
