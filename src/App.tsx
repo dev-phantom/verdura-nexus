@@ -21,7 +21,7 @@ const imageUrls = [
   "https://res.cloudinary.com/phantom1245/image/upload/v1733779338/verdura-nexus/Rectangle_1_1_n6uooh.png",
   "https://res.cloudinary.com/phantom1245/image/upload/v1733781748/verdura-nexus/Frame_23_exivxp.png",
   "https://res.cloudinary.com/phantom1245/image/upload/v1733781741/verdura-nexus/mdi_emoji-kiss-outline_yx0303.png",
-
+  
 ];
 
 export default function App() {
@@ -37,9 +37,10 @@ export default function App() {
   }, []);
   return (
     <Routes>
-      <Route index element={<Home />} />
-      <Route path="create" element={<Create />} />
-      <Route path="decrypt" element={<Decrypt />} />
+
+    <Route index element={<Home />} />
+    <Route path="create" element={<Create />} />
+    <Route path="decrypt" element={<Decrypt />} />
 
     </Routes>
 
